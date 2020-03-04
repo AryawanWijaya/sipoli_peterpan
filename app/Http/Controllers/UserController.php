@@ -156,5 +156,12 @@ class UserController extends Controller
          ]);
          $user = User::find($id);
          return response()->json(compact('user'),200);
-     }
+    }
+    public function deleteUser($id){
+        DB::table('users')->where('id',$id)->delete();
+        return response()->json([
+            'status' => "Data Deleted"
+        ],200);
+    }
 }
+

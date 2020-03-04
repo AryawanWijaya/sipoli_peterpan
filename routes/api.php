@@ -32,7 +32,20 @@ Route::post('/juriEdit/{id}','UserController@editDataJuri')->middleware('jwt.ver
 //umum
 Route::post('/login', 'UserController@login');
 Route::get('/user', 'UserController@getAuthenticatedUser')->middleware('jwt.verify');
+Route::post('/user/delete/{id}','UserController@deleteUser')->middleware('jwt.verify');
 Route::get('/allPeserta', 'UserController@readAllDataPeserta')->middleware('jwt.verify');
+
+
+//sesivoute
+Route::post('/sesi/voute/create','sesiVouteController@createVoute');
+Route::get('/sesi/getAll','sesiVouteController@getAllSesi');
+Route::get('/sesi/get/{id}','sesiVouteController@getOneSesi');
+Route::post('/sesi/voute/update/{id}','sesiVouteController@editSesi');
+Route::post('/sesi/voute/delete/{id}','sesiVouteController@deleteSesi');
+
+//voute
+Route::post('/voute/{id}','VouteController@voute');
+
 
 // Route::post('/admin/createPeserta', 'adminController@createPeserta');
 // Route::post('/admin/updatePeserta', 'adminController@updatePeserta');

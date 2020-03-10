@@ -32,4 +32,9 @@ class VouteController extends Controller
             'count'=>$count+1,
         ],200);
     }
+    public function listVoute(){
+        $user =DB::table('users')->where('status','AUDISI')->select('id','name','email')->get();
+        return response()->json(compact('user'));
+
+    }
 }

@@ -45,7 +45,7 @@ Route::post('/sesi/voute/delete/{id}','sesiVouteController@deleteSesi');
 
 //voute
 Route::post('/voute/{id}','VouteController@voute');
-
+Route::get('/voute/list','VouteController@listVoute');
 
 // Route::post('/admin/createPeserta', 'adminController@createPeserta');
 // Route::post('/admin/updatePeserta', 'adminController@updatePeserta');

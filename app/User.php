@@ -37,4 +37,12 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    protected function vote(){
+        return $this->hasOne('App\Vote','id_org_yg_vote','id');
+    }
+
+    protected function vote2(){
+        return $this->hasMany('App\Vote','id_org_di_vote','id');
+    }
 }

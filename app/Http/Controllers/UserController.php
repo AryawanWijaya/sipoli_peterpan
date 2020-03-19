@@ -47,7 +47,7 @@ class UserController extends Controller
             'password' => Hash::make($request->get('password')),
             'role' =>1,
             'status' =>'AUDISI',
-            'count_voute' =>0,
+            'count_vote' =>0,
 
         ]);
 
@@ -73,8 +73,8 @@ class UserController extends Controller
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
             'role' =>2,
-            'status' =>'AKTIF',
-            'count_voute' =>null,
+            'status' => $request->get('status'),
+            'count_vote' =>null,
         ]);
         $token = JWTAuth::fromUser($user);
 
@@ -99,7 +99,7 @@ class UserController extends Controller
             'password' => Hash::make($request->get('password')),
             'role' =>0,
             'status' =>'ADMIN',
-            'count_voute' =>null,
+            'count_vote' =>null,
         ]);
 
 
@@ -153,6 +153,7 @@ class UserController extends Controller
          'name' => $request->get('name'),
          'email' => $request->get('email'),
          'status' => $request->get('status'),
+         'password' => Hash::make($request->get('password')),
          ]);
          $user = User::find($id);
          return response()->json(compact('user'),200);
@@ -162,6 +163,26 @@ class UserController extends Controller
         return response()->json([
             'status' => "Data Deleted"
         ],200);
+    }
+
+    public function logout(Request $request)
+    {
+        // Get JWT Token from the request header key "Authorization"
+        $token = $request->header('Authorization');
+        // Invalidate the token
+        try {
+            JWTAuth::invalidate($token);
+            return response()->json([
+                'status' => 'success',
+                'message'=> "User successfully logged out."
+            ]);
+        } catch (JWTException $e) {
+            // something went wrong whilst attempting to encode the token
+            return response()->json([
+              'status' => 'error',
+              'message' => 'Failed to logout, please try again.'
+            ], 500);
+        }
     }
 }
 

@@ -19,6 +19,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('jwt.auth')->group(function(){
+
+    Route::post('logout', 'UserController@logout');
+});
+
 //peserta --> dilakukan sendiri oleh peserta
 Route::post('/registerPeserta', 'UserController@register');
 Route::post('/pesertaEdit/{id}','UserController@editDataPeserta')->middleware('jwt.verify');
@@ -36,16 +41,17 @@ Route::post('/user/delete/{id}','UserController@deleteUser')->middleware('jwt.ve
 Route::get('/allPeserta', 'UserController@readAllDataPeserta')->middleware('jwt.verify');
 
 
-//sesivoute
-Route::post('/sesi/voute/create','sesiVouteController@createVoute');
+//sesivote
+Route::post('/sesi/vote/create','sesiVouteController@createVoute');
 Route::get('/sesi/getAll','sesiVouteController@getAllSesi');
 Route::get('/sesi/get/{id}','sesiVouteController@getOneSesi');
-Route::post('/sesi/voute/update/{id}','sesiVouteController@editSesi');
-Route::post('/sesi/voute/delete/{id}','sesiVouteController@deleteSesi');
+Route::post('/sesi/vote/update/{id}','sesiVouteController@editSesi');
+Route::post('/sesi/vote/delete/{id}','sesiVouteController@deleteSesi');
 
-//voute
-Route::post('/voute/{id}','VouteController@voute');
-Route::get('/voute/list','VouteController@listVoute');
+//vote
+Route::post('/vote/{id}','VouteController@vote');
+Route::get('/vote/list','VouteController@listVoute');
+Route::get('/vote/hasilVote/{id}','VouteController@getListHasilVouteByKet');
 
 // Route::post('/admin/createPeserta', 'adminController@createPeserta');
 // Route::post('/admin/updatePeserta', 'adminController@updatePeserta');

@@ -7,29 +7,32 @@ use Illuminate\Support\Facades\DB;
 
 class VouteController extends Controller
 {
-    public function voute($id){
+    public function vote($id){
         date_default_timezone_set("Asia/Jakarta");
-        $awal = DB::table('sesi_voute')->pluck('tgl_mulai_voute')->last();
-        $akhir= DB::table('sesi_voute')->pluck('tgl_akhir_voute')->last();
-        $idVoute = DB::table('sesi_voute')->pluck('id_sesi_voute')->last();
+        $awal = DB::table('sesi_votes')->pluck('tgl_mulai_vote')->last();
+        $akhir= DB::table('sesi_votes')->pluck('tgl_akhir_vote')->last();
+        $idVoute = DB::table('sesi_votes')->pluck('id_sesi_vote')->last();
         $date = date("Y-m-d H:i:s");
-        $count=DB::table('users')->where('id',$id)->pluck('count_voute')->first();
+        $count=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
         if($date<=$akhir && $date>=$awal){
-            // DB::table('voute')->insert([
-            //     'id_sesi_voute' =>$idVoute,
-            //     'tgl_voute' => $date,
-            //     'id' =>$id,
-            // ]);
-            DB::table('users')->where('id',$id)->update([
-                'count_voute'=>$count+1,
+            DB::table('votes')->insert([
+                'id_sesi_vote' =>$idVoute,
+                'tgl_vote' => $date,
+                'id_org_di_vote' =>$id,
+                'id_org_yg_vote' =>null,
             ]);
-            $res='Vouted';
+            DB::table('users')->where('id',$id)->update([
+                'count_vote'=>$count+1,
+            ]);
+            $countValue=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
+            $res='Voted';
         }else{
-            $res='Error Voute';
+            $res='Error Vote';
+            $countValue=0;
         }
         return response()->json([
             'status'=>$res,
-            'count'=>$count+1,
+            'count'=>$countValue,
         ],200);
     }
     public function listVoute(){
@@ -37,4 +40,15 @@ class VouteController extends Controller
         return response()->json(compact('user'));
 
     }
+
+    public function getListHasilVouteByKet($id){
+        $list = DB::table('votes')
+                    ->where('id_sesi_vote',$id)
+                    ->select('id_org_di_vote',DB::raw('count(id_org_di_vote) as total'))
+                    ->groupBy('id_org_di_vote')
+                    ->get();
+        return response()->json(compact('list'));
+
+    }
 }
+

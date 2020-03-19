@@ -54,4 +54,6 @@ class sesiVouteController extends Controller
             'tgl_akhir_vote' =>$request->tgl_akhir_vote,
         ],200);
     }
+
+
 }

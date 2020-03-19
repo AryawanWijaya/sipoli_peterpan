@@ -50,8 +50,11 @@ Route::post('/sesi/vote/delete/{id}','sesiVouteController@deleteSesi');
 
 //vote
 Route::post('/vote/{id}','VouteController@vote');
+Route::post('/vote/juri/{id}','VouteController@voteJuri');
 Route::get('/vote/list','VouteController@listVoute');
 Route::get('/vote/hasilVote/{id}','VouteController@getListHasilVouteByKet');
+
+
 
 // Route::post('/admin/createPeserta', 'adminController@createPeserta');
 // Route::post('/admin/updatePeserta', 'adminController@updatePeserta');

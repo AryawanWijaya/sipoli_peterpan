@@ -15,26 +15,34 @@ class VouteController extends Controller
         $idVoute = DB::table('sesi_votes')->pluck('id_sesi_vote')->last();
         $date = date("Y-m-d H:i:s");
         $count=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
-        if($date<=$akhir && $date>=$awal){
-            DB::table('votes')->insert([
-                'id_sesi_vote' =>$idVoute,
-                'tgl_vote' => $date,
-                'id_org_di_vote' =>$id,
-                'id_org_yg_vote' =>null,
-            ]);
-            DB::table('users')->where('id',$id)->update([
-                'count_vote'=>$count+1,
-            ]);
-            $countValue=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
-            $res='Voted';
+        $statusPeserta = DB::table('users')->where('id',$id)->pluck('status')->first();
+        if($statusPeserta=='AUDISI'){
+            if($date<=$akhir && $date>=$awal){
+                DB::table('votes')->insert([
+                    'id_sesi_vote' =>$idVoute,
+                    'tgl_vote' => $date,
+                    'id_org_di_vote' =>$id,
+                    'id_org_yg_vote' =>null,
+                ]);
+                DB::table('users')->where('id',$id)->update([
+                    'count_vote'=>$count+1,
+                ]);
+                $countValue=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
+                $res='Voted';
+            }else{
+                $res='Error Vote';
+                $countValue=0;
+            }
+            return response()->json([
+                'status'=>$res,
+                'count'=>$countValue,
+            ],200);
         }else{
-            $res='Error Vote';
-            $countValue=0;
+            return response()->json([
+                'error' =>'Peserta tidak dalam status audisi'
+            ],200);
         }
-        return response()->json([
-            'status'=>$res,
-            'count'=>$countValue,
-        ],200);
+
     }
 
     private function cekJuri($id_juri, $id_sesi){
@@ -56,48 +64,86 @@ class VouteController extends Controller
         $date = date("Y-m-d H:i:s");
         $id_sesi = DB::table('sesi_votes')->pluck('id_sesi_vote')->last();
         $count=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
-        if($date<=$akhir && $date>=$awal){
-            if($this->cekJuri($request->get('id_juri'),$id_sesi)==true){
-                for ($i=0;$i<5;$i++){
-                    DB::table('votes')->insert([
-                        'id_sesi_vote' =>$idVoute,
-                        'tgl_vote' => $date,
-                        'id_org_di_vote' =>$id,
-                        'id_org_yg_vote' =>$request->get('id_juri'),
-                    ]);
+        $statusPeserta = DB::table('users')->where('id',$id)->pluck('status')->first();
+        $statusJuri = DB::table('users')->where('id',$request->get('id_juri'))->pluck('status')->first();
+        if($statusJuri=='Aktif'){
+            if($statusPeserta=='AUDISI'){
+                if($date<=$akhir && $date>=$awal){
+                    if($this->cekJuri($request->get('id_juri'),$id_sesi)==true){
+                        for ($i=0;$i<5;$i++){
+                            DB::table('votes')->insert([
+                                'id_sesi_vote' =>$idVoute,
+                                'tgl_vote' => $date,
+                                'id_org_di_vote' =>$id,
+                                'id_org_yg_vote' =>$request->get('id_juri'),
+                            ]);
+                        }
+                            DB::table('users')->where('id',$id)->update([
+                                'count_vote'=>$count+5,
+                            ]);
+                            $countValue=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
+                            $res='Voted';
+                    }else{
+                        $res='Id Juri Sudah Melakukan Vote';
+                        $countValue=0;
+                    }
+                }else{
+                    $res='Sesi Vote telah abis';
+                    $countValue=0;
                 }
-                    DB::table('users')->where('id',$id)->update([
-                        'count_vote'=>$count+5,
-                    ]);
-                    $countValue=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
-                    $res='Voted';
+                return response()->json([
+                    'status'=>$res,
+                    'count'=>$countValue,
+                ],200);
             }else{
-                $res='Id Juri Sudah Melakukan Vote';
-                $countValue=0;
+                return response()->json([
+                    'error' =>'Peserta tidak dalam status audisi'
+                ],200);
             }
         }else{
-            $res='Sesi Vote telah abis';
-            $countValue=0;
+            return response()->json([
+                'error' =>'Status Juri Tidak Aktif'
+            ],200);
         }
-        return response()->json([
-            'status'=>$res,
-            'count'=>$countValue,
-        ],200);
+
+
     }
     public function listVoute(){
         $user =DB::table('users')->where('status','AUDISI')->select('id','name','email')->get();
         return response()->json(compact('user'));
-
     }
 
     public function getListHasilVouteByKet($id){
         $list = DB::table('votes')
+                    ->join('users','votes.id_org_di_vote','=','users.id')
                     ->where('id_sesi_vote',$id)
-                    ->select('id_org_di_vote',DB::raw('count(id_org_di_vote) as total'))
-                    ->groupBy('id_org_di_vote')
+                    ->select('id_org_di_vote','users.name',DB::raw('count(id_org_di_vote) as total'))
+                    ->groupBy('id_org_di_vote','users.name')
                     ->get();
         return response()->json(compact('list'));
 
+    }
+
+    public function eliminasiPeserta(){
+        $updateCount = DB::table('users')
+                        ->where('status','ADMIN')
+                        ->orWhere('status','Aktif')
+                        ->orWhere('status','Tidak Aktif')
+                        ->orWhere('status','ELIMINASI')
+                        ->update(['count_vote'=>null,]);
+        $id = DB::table('users')
+                    ->where('count_vote',DB::raw("(select min(count_vote) from users)"))
+                    ->pluck('id')
+                    ->first();
+        $eliminasi = DB::table('users')->where('id',$id)->update(['status'=>'ELIMINASI']);
+        $nameEliminasi = DB::table('users')->where('id',$id)->pluck('name')->first();
+        $idSesiVote = DB::table('sesi_votes')->pluck('id_sesi_vote')->last();
+        $tutupSesiVote = DB::table('sesi_votes')->where('id_sesi_vote',$idSesiVote)->update(['status_sesi'=>0]);
+
+        return response()->json([
+            'Terelimiasi' => $nameEliminasi,
+            'idSesiVoteDitutup' => $idSesiVote,
+        ]);
     }
 }
 

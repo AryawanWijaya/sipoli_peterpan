@@ -138,6 +138,16 @@ class UserController extends Controller
         return response()->json(compact('user'),200);
     }
 
+    public function getAllJuri(){
+        $user = DB::table('users')->where('role',2)->get();
+        return response()->json(compact('user'),200);
+    }
+
+    public function getAllPeserta(){
+        $user = DB::table('users')->where('role',1)->get();
+        return response()->json(compact('user'),200);
+    }
+
     public function editDataPeserta(Request $request, $id){
        $user= DB::table('users')->where('id',$id)->update([
         'name' => $request->get('name'),

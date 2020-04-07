@@ -26,18 +26,23 @@ Route::middleware('jwt.auth')->group(function(){
 
 //peserta --> dilakukan sendiri oleh peserta
 Route::post('/registerPeserta', 'UserController@register');
-Route::post('/pesertaEdit/{id}','UserController@editDataPeserta')->middleware('jwt.verify');
-
+// Route::post('/pesertaEdit/{id}','UserController@editDataPeserta')->middleware('jwt.verify');
+Route::post('/pesertaEdit/{id}','UserController@editDataPeserta');
+Route::get('/peserta/getAll','UserController@getAllPeserta');
 //admin
 Route::post('/registerAdmin', 'UserController@registerAdmin');
 //juri --> dilakukan oleh admin
-Route::post('/registerJuri', 'UserController@registerJuri')->middleware('jwt.verify');
-Route::post('/juriEdit/{id}','UserController@editDataJuri')->middleware('jwt.verify');
+Route::post('/registerJuri', 'UserController@registerJuri');
+// Route::post('/registerJuri', 'UserController@registerJuri')->middleware('jwt.verify');
+// Route::post('/juriEdit/{id}','UserController@editDataJuri')->middleware('jwt.verify');
+Route::post('/juriEdit/{id}','UserController@editDataJuri');
+Route::get('/juri/getAll','UserController@getAllJuri');
 
 //umum
 Route::post('/login', 'UserController@login');
 Route::get('/user', 'UserController@getAuthenticatedUser')->middleware('jwt.verify');
-Route::post('/user/delete/{id}','UserController@deleteUser')->middleware('jwt.verify');
+// Route::post('/user/delete/{id}','UserController@deleteUser')->middleware('jwt.verify');
+Route::post('/user/delete/{id}','UserController@deleteUser');
 Route::get('/allPeserta', 'UserController@readAllDataPeserta')->middleware('jwt.verify');
 
 
@@ -53,7 +58,7 @@ Route::post('/vote/{id}','VouteController@vote');
 Route::post('/vote/juri/{id}','VouteController@voteJuri');
 Route::get('/vote/list','VouteController@listVoute');
 Route::get('/vote/hasilVote/{id}','VouteController@getListHasilVouteByKet');
-
+Route::post('/eliminasi','VouteController@eliminasiPeserta');
 
 
 // Route::post('/admin/createPeserta', 'adminController@createPeserta');

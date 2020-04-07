@@ -18,6 +18,7 @@ class CreateSesiVotesTable extends Migration
             $table->string('ket_sesi');
             $table->timestamp('tgl_mulai_vote')->nullable();
             $table->timestamp('tgl_akhir_vote')->nullable();
+            $table->boolean('status_sesi');
             $table->timestamps();
         });
     }

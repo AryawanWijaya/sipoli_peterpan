@@ -608,3 +608,29 @@ SIPOLI is a polling system that used for Duta Idol (Project Peterpan DWCU_Argo U
             "status": "Voted",
             "count": 5
         }
+
+### Get Hasil Vote Berdasarkan Sesi Vote [GET vote/hasilVote/:id]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
+    
++ Response 200 (application/json)
+
+    + Body
+        {
+    "list": [
+        {
+            "id_user": 5,
+            "name": "eva4",
+            "jumlah_vote": 0
+        },
+        {
+            "id_user": 6,
+            "name": "Bambang1",
+            "jumlah_vote": 1
+        }
+    ]
+    }

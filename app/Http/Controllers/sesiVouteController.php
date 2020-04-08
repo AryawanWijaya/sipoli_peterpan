@@ -22,11 +22,12 @@ class sesiVouteController extends Controller
                 $user = DB::table('users')->update([
                     'count_vote'=>0,
                 ]);
+                $sesiVoteTerbaru = DB::table('sesi_votes')->pluck('id_sesi_vote')->last();
                 //insert di table laporan data seluruh peserta
                 $idPeserta = DB::table('users')->where('status','AUDISI')->pluck('id');
                 foreach($idPeserta as $value){
                     DB::table('laporans')->insert([
-                    'id_sesi_vote'=>1,
+                    'id_sesi_vote'=>$sesiVoteTerbaru,
                     'id_user'=>$value,
                     'jumlah_vote'=>0,
                     ]);
@@ -54,10 +55,12 @@ class sesiVouteController extends Controller
             $user = DB::table('users')->update([
                 'count_vote'=>0,
             ]);
+
+            $sesiVoteTerbaru = DB::table('sesi_votes')->pluck('id_sesi_vote')->last();
             $idPeserta = DB::table('users')->where('status','AUDISI')->pluck('id');
                 foreach($idPeserta as $value){
                     DB::table('laporans')->insert([
-                    'id_sesi_vote'=>1,
+                    'id_sesi_vote'=>$sesiVoteTerbaru,
                     'id_user'=>$value,
                     'jumlah_vote'=>0,
                     ]);

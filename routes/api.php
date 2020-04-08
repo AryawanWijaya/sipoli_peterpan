@@ -26,47 +26,34 @@ Route::middleware('jwt.auth')->group(function(){
 
 //peserta --> dilakukan sendiri oleh peserta
 Route::post('/registerPeserta', 'UserController@register');
-// Route::post('/pesertaEdit/{id}','UserController@editDataPeserta')->middleware('jwt.verify');
-Route::post('/pesertaEdit/{id}','UserController@editDataPeserta');
-Route::get('/peserta/getAll','UserController@getAllPeserta');
+Route::post('/pesertaEdit/{id}','UserController@editDataPeserta')->middleware('jwt.verify');
+Route::get('/peserta/getAll','UserController@getAllPeserta')->middleware('jwt.verify');
 //admin
 Route::post('/registerAdmin', 'UserController@registerAdmin');
 //juri --> dilakukan oleh admin
-Route::post('/registerJuri', 'UserController@registerJuri');
-// Route::post('/registerJuri', 'UserController@registerJuri')->middleware('jwt.verify');
-// Route::post('/juriEdit/{id}','UserController@editDataJuri')->middleware('jwt.verify');
-Route::post('/juriEdit/{id}','UserController@editDataJuri');
-Route::get('/juri/getAll','UserController@getAllJuri');
+Route::post('/registerJuri', 'UserController@registerJuri')->middleware('jwt.verify');
+Route::post('/juriEdit/{id}','UserController@editDataJuri')->middleware('jwt.verify');
+Route::get('/juri/getAll','UserController@getAllJuri')->middleware('jwt.verify');
 
 //umum
 Route::post('/login', 'UserController@login');
 Route::get('/user', 'UserController@getAuthenticatedUser')->middleware('jwt.verify');
-// Route::post('/user/delete/{id}','UserController@deleteUser')->middleware('jwt.verify');
-Route::post('/user/delete/{id}','UserController@deleteUser');
+Route::post('/user/delete/{id}','UserController@deleteUser')->middleware('jwt.verify');
 Route::get('/allPeserta', 'UserController@readAllDataPeserta')->middleware('jwt.verify');
 
-
 //sesivote
-Route::post('/sesi/vote/create','sesiVouteController@createVoute');
-Route::get('/sesi/getAll','sesiVouteController@getAllSesi');
-Route::get('/sesi/get/{id}','sesiVouteController@getOneSesi');
-Route::post('/sesi/vote/update/{id}','sesiVouteController@editSesi');
-Route::post('/sesi/vote/delete/{id}','sesiVouteController@deleteSesi');
+Route::post('/sesi/vote/create','sesiVouteController@createVoute')->middleware('jwt.verify');
+Route::get('/sesi/getAll','sesiVouteController@getAllSesi')->middleware('jwt.verify');
+Route::get('/sesi/get/{id}','sesiVouteController@getOneSesi')->middleware('jwt.verify');
+Route::post('/sesi/vote/update/{id}','sesiVouteController@editSesi')->middleware('jwt.verify');
+Route::post('/sesi/vote/delete/{id}','sesiVouteController@deleteSesi')->middleware('jwt.verify');
 
 //vote
 Route::post('/vote/{id}','VouteController@vote');
-Route::post('/vote/juri/{id}','VouteController@voteJuri');
 Route::get('/vote/list','VouteController@listVoute');
-Route::get('/vote/hasilVote/{id}','VouteController@getListHasilVouteByKet');
-Route::post('/eliminasi','VouteController@eliminasiPeserta');
+Route::post('/vote/juri/{id}','VouteController@voteJuri')->middleware('jwt.verify');
 
-Route::post('/coba','sesiVouteController@insertPesertaToLaporan');
-
-
-// Route::post('/admin/createPeserta', 'adminController@createPeserta');
-// Route::post('/admin/updatePeserta', 'adminController@updatePeserta');
-// Route::get('/admin/getAllPeserta', 'adminController@readAllData')->middleware('jwt.verify');
-// Route::post('/admin/getOnePeserta', 'adminController@readOneData');
-// Route::post('/admin/deletePeserta', 'adminController@deletePeserta');
+Route::get('/vote/hasilVote/{id}','VouteController@getListHasilVouteByKet')->middleware('jwt.verify');
+Route::post('/eliminasi','VouteController@eliminasiPeserta')->middleware('jwt.verify');
 
 

@@ -33,7 +33,7 @@ class VouteController extends Controller
                 $countValue=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
                 $res='Voted';
             }else{
-                $res='Error Vote';
+                $res='Error Vote, Anda tidak dalam masa Vote';
                 $countValue=0;
             }
             return response()->json([

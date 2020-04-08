@@ -1,0 +1,610 @@
+FORMAT: 1A
+HOST: http://localhost:8000/
+
+# SIPOLI
+
+SIPOLI is a polling system that used for Duta Idol (Project Peterpan DWCU_Argo Uciha) 
+
+## SIPOLI API [/api]
+
+### Retrieve User [GET /user]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+
++ Response 200 (application/json)
+
+        {
+    "user": {
+        "id": 6,
+        "name": "Bambang1",
+        "email": "bambang@gmail.com",
+        "role": "1",
+        "status": "ELIMINASI",
+        "count_vote": 0,
+        "email_verified_at": null,
+        "created_at": "2020-04-08 06:38:49",
+        "updated_at": "2020-04-08 06:38:49"
+        }
+    }
+
+### Retrieve AllUser [GET /allPeserta]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+
++ Response 200 (application/json)
+
+   {
+    "user": [
+        {
+            "id": 1,
+            "name": "eva",
+            "email": "eva@gmail.com",
+            "role": "1",
+            "status": "AUDISI",
+            "count_vote": 0,
+            "email_verified_at": null,
+            "password": "$2y$10$pINK2saF722a0yZVDFfwhePj2Opg7L4cL/ctF7bXNqNDiF0NqupMa",
+            "remember_token": null,
+            "created_at": "2020-04-08 04:51:13",
+            "updated_at": "2020-04-08 04:51:13"
+        },
+        {
+            "id": 3,
+            "name": "Eva3",
+            "email": "eva3@gmail.com",
+            "role": "1",
+            "status": "ELIMINASI",
+            "count_vote": 0,
+            "email_verified_at": null,
+            "password": "$2y$10$dkHaq5.dDl40d8RUkQvR7OhF5MFeGb/Y6A3gerGeQdY57IDb8pPP.",
+            "remember_token": null,
+            "created_at": "2020-04-08 04:52:06",
+            "updated_at": "2020-04-08 04:52:06"
+        },
+        {
+            "id": 4,
+            "name": "Ary",
+            "email": "ary@gmail.com",
+            "role": "2",
+            "status": "Aktif",
+            "count_vote": 0,
+            "email_verified_at": null,
+            "password": "$2y$10$kUyXVaRW6FhBF1zpXOAc1uYcBykrMhGA4PP/ZgP.ii1ujE4TprweO",
+            "remember_token": null,
+            "created_at": "2020-04-08 04:52:26",
+            "updated_at": "2020-04-08 04:52:26"
+        },
+        {
+            "id": 5,
+            "name": "eva4",
+            "email": "eva4@gmail.com",
+            "role": "1",
+            "status": "ELIMINASI",
+            "count_vote": 0,
+            "email_verified_at": null,
+            "password": "$2y$10$l0fecT2fRpmh12V67KZ8FO74xc9Iqvd492hWgIe3muzNnmUI7kayG",
+            "remember_token": null,
+            "created_at": "2020-04-08 04:52:51",
+            "updated_at": "2020-04-08 04:52:51"
+        },
+        {
+            "id": 6,
+            "name": "Bambang1",
+            "email": "bambang@gmail.com",
+            "role": "1",
+            "status": "ELIMINASI",
+            "count_vote": 0,
+            "email_verified_at": null,
+            "password": "$2y$10$M18kWXz8yDCrE3nYByCDvuVrHhAgJ6ewqWMy26kzyvMEd3oYl9cLq",
+            "remember_token": null,
+            "created_at": "2020-04-08 06:38:49",
+            "updated_at": "2020-04-08 06:38:49"
+        },
+        {
+            "id": 7,
+            "name": "Wijaya",
+            "email": "wijaya@gmail.com",
+            "role": "2",
+            "status": "Aktif",
+            "count_vote": 0,
+            "email_verified_at": null,
+            "password": "$2y$10$T/.5jBPYUyD/oE.FKSVDO.TgXTR/1e5ytFtdbTJRAHgHn00vDtx7W",
+            "remember_token": null,
+            "created_at": "2020-04-08 06:43:55",
+            "updated_at": "2020-04-08 06:43:55"
+        }
+    ]
+}
+    
+### Login [POST /login]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
+    + Body
+        {
+            "email": "eva@gmail.com",
+            "password": "12345678"
+        }
+    
++ Response 200 (application/json)
+
+    + Body
+
+        {
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTU4NjMzMTU4MiwiZXhwIjoxNTg2MzM1MTgyLCJuYmYiOjE1ODYzMzE1ODIsImp0aSI6ImhoQWh5SlZRUzl5empBUW8iLCJzdWIiOjYsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.3SbetIr097FoccLev6-xaHDb1fuCeXCCRl7IIDgOlYk",
+            "role": "1"
+        }
+
+### Logout [POST /logout]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
++ Response 200 (application/json)
+
+    + Body
+
+        {
+            "status": "success",
+            "message": "User successfully logged out."
+        }
+
+### Delete User [POST /user/delete/:id]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
++ Response 200 (application/json)
+
+    + Body
+
+        {
+           "status": "Data Deleted"
+        }
+
+### Register Peserta [POST /registerPeserta]
+
++ Request (application/json)
+
+    + Body
+        {
+            "name": "Paijo",
+            "email": "Paijo@gmail.com",
+            "password": "12345678",
+            "password_confirmation": "12345678"
+        }
+    
++ Response 200 (application/json)
+
+    + Body
+
+        {
+           "user": {
+                "name": "Paijo",
+                "email": "Paijo@gmail.com",
+                "role": 1,
+                "status": "AUDISI",
+                "updated_at": "2020-04-08 08:08:42",
+                "created_at": "2020-04-08 08:08:42",
+                "id": 8
+            },
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9yZWdpc3RlclBlc2VydGEiLCJpYXQiOjE1ODYzMzMzMjIsImV4cCI6MTU4NjMzNjkyMiwibmJmIjoxNTg2MzMzMzIyLCJqdGkiOiJsSnJ5bjU3VHI2MDF2Y21BIiwic3ViIjo4LCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.yCHzH-lfEaECFkwOhZCBq_-VaQ8v_OXXuu8A9w8MWX0"
+        }
+
+### Get All Peserta [GET /peserta/getAll]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
+    
++ Response 200 (application/json)
+
+    + Body
+
+        {
+    "user": [
+        {
+            "id": 3,
+            "name": "Eva3",
+            "email": "eva3@gmail.com",
+            "role": "1",
+            "status": "ELIMINASI",
+            "count_vote": 0,
+            "email_verified_at": null,
+            "password": "$2y$10$dkHaq5.dDl40d8RUkQvR7OhF5MFeGb/Y6A3gerGeQdY57IDb8pPP.",
+            "remember_token": null,
+            "created_at": "2020-04-08 04:52:06",
+            "updated_at": "2020-04-08 04:52:06"
+        },
+        {
+            "id": 5,
+            "name": "eva4",
+            "email": "eva4@gmail.com",
+            "role": "1",
+            "status": "ELIMINASI",
+            "count_vote": 0,
+            "email_verified_at": null,
+            "password": "$2y$10$l0fecT2fRpmh12V67KZ8FO74xc9Iqvd492hWgIe3muzNnmUI7kayG",
+            "remember_token": null,
+            "created_at": "2020-04-08 04:52:51",
+            "updated_at": "2020-04-08 04:52:51"
+        },
+        {
+            "id": 6,
+            "name": "Bambang1",
+            "email": "bambang@gmail.com",
+            "role": "1",
+            "status": "ELIMINASI",
+            "count_vote": 0,
+            "email_verified_at": null,
+            "password": "$2y$10$M18kWXz8yDCrE3nYByCDvuVrHhAgJ6ewqWMy26kzyvMEd3oYl9cLq",
+            "remember_token": null,
+            "created_at": "2020-04-08 06:38:49",
+            "updated_at": "2020-04-08 06:38:49"
+        },
+        {
+            "id": 8,
+            "name": "Paijo",
+            "email": "Paijo@gmail.com",
+            "role": "1",
+            "status": "AUDISI",
+            "count_vote": null,
+            "email_verified_at": null,
+            "password": "$2y$10$QVrBcNOrs9aszFGGl5PgI.DGOmhd0/sHLIJ/44fQfJFXqLvLmHzRq",
+            "remember_token": null,
+            "created_at": "2020-04-08 08:08:42",
+            "updated_at": "2020-04-08 08:08:42"
+        }
+    ]
+}
+
+### Edit Peserta [POST /pesertaEdit/:id]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
+    + Body
+        {
+            "name": "Paimin@gmail.com",
+            "email": "Paimin@gmail.com",
+            "password": "12345678"
+        }
+    
++ Response 200 (application/json)
+
+    + Body
+
+        {
+    "user": {
+        "id": 8,
+        "name": "Paimin",
+        "email": "Paimin@gmail.com",
+        "role": "1",
+        "status": "AUDISI",
+        "count_vote": null,
+        "email_verified_at": null,
+        "created_at": "2020-04-08 08:08:42",
+        "updated_at": "2020-04-08 08:08:42"
+    }
+}
+
+### Register Juri [POST /registerJuri]
++ Request (application/json)
+    
+    + Headers
+        Authorization: paste your token here
+
+    + Body
+        {
+            "name": "Kristina1",
+            "email": "Kristina1@gmail.com",
+            "password": "12345678",
+            "password_confirmation": "12345678",
+            "status": "Aktif",
+        }
+    
++ Response 200 (application/json)
+
+    + Body
+
+        {
+    "user": {
+        "name": "Kristina1",
+        "email": "Kristina1@gmail.com",
+        "role": 2,
+        "status": "Aktif",
+        "updated_at": "2020-04-08 08:42:37",
+        "created_at": "2020-04-08 08:42:37",
+        "id": 10
+    },
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9yZWdpc3Rlckp1cmkiLCJpYXQiOjE1ODYzMzUzNTcsImV4cCI6MTU4NjMzODk1NywibmJmIjoxNTg2MzM1MzU3LCJqdGkiOiI4ZTA1dFV4bGdzY2RqRVlmIiwic3ViIjoxMCwicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSJ9.H-YmKvs6h8jyHT8NKNxSlpdDckH0hnjrBQ9BRg6dZxQ"
+}
+
+### Get All Juri [GET /juri/getAll]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
++ Response 200 (application/json)
+
+    + Body
+
+      {
+    "user": [
+        {
+            "id": 4,
+            "name": "Ary",
+            "email": "ary@gmail.com",
+            "role": "2",
+            "status": "Aktif",
+            "count_vote": 0,
+            "email_verified_at": null,
+            "password": "$2y$10$kUyXVaRW6FhBF1zpXOAc1uYcBykrMhGA4PP/ZgP.ii1ujE4TprweO",
+            "remember_token": null,
+            "created_at": "2020-04-08 04:52:26",
+            "updated_at": "2020-04-08 04:52:26"
+        },
+        {
+            "id": 7,
+            "name": "Wijaya",
+            "email": "wijaya@gmail.com",
+            "role": "2",
+            "status": "Aktif",
+            "count_vote": 0,
+            "email_verified_at": null,
+            "password": "$2y$10$T/.5jBPYUyD/oE.FKSVDO.TgXTR/1e5ytFtdbTJRAHgHn00vDtx7W",
+            "remember_token": null,
+            "created_at": "2020-04-08 06:43:55",
+            "updated_at": "2020-04-08 06:43:55"
+        },
+        {
+            "id": 9,
+            "name": "Kristina",
+            "email": "Kristina@gmail.com",
+            "role": "2",
+            "status": "Aktif",
+            "count_vote": null,
+            "email_verified_at": null,
+            "password": "$2y$10$K4TZ9Sn7ULuQeR5kwbVHbOAGoQhXjPo0A.VdywO59XSxOg23KoCCW",
+            "remember_token": null,
+            "created_at": "2020-04-08 08:29:43",
+            "updated_at": "2020-04-08 08:29:43"
+        }
+    ]
+}
+
+### Edit Juri [POST /juriEdit/:id]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
+    + Body
+        {
+            "name": "kristina2@gmail.com",
+            "email": "kristina2@gmail.com",
+            "status": "Aktif",
+            "password": "12345678"
+        }
+    
++ Response 200 (application/json)
+
+    + Body
+
+        {
+    "user": {
+        "id": 10,
+        "name": "kristina2",
+        "email": "kristina2@gmail.com",
+        "role": "2",
+        "status": "Aktif",
+        "count_vote": null,
+        "email_verified_at": null,
+        "created_at": "2020-04-08 08:42:37",
+        "updated_at": "2020-04-08 08:42:37"
+    }
+}
+
+### Create Sesi Vote [POST /sesi/vote/create]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
+    + Body
+        {
+            "ket_sesi": "Minggu3",
+            "tgl_mulai_vote": "2020-03-06 00:00:00",
+            "tgl_akhir_vote": "2020-04-26 23:59:59"
+        }
+    
++ Response 200 (application/json)
+
+    + Body
+
+        {
+           "status": "Sesi Created",
+            "ket_sesi": "Minggu3",
+            "tgl_mulai_vote": "2020-03-06 00:00:00",
+            "tgl_akhir_vote": "2020-04-26 23:59:59",
+            "status_sesi": 1
+        }
+
+### Get All Sesi Vote [GET /sesi/getAll]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
++ Response 200 (application/json)
+
+    + Body
+
+       {
+    "sesi": [
+        {
+            "id_sesi_vote": 2,
+            "ket_sesi": "Minggu1",
+            "tgl_mulai_vote": "2020-03-19 00:00:00",
+            "tgl_akhir_vote": "2020-04-25 23:59:59",
+            "status_sesi": 0,
+            "created_at": null,
+            "updated_at": null
+        },
+        {
+            "id_sesi_vote": 4,
+            "ket_sesi": "Minggu2",
+            "tgl_mulai_vote": "2020-03-06 00:00:00",
+            "tgl_akhir_vote": "2020-04-26 23:59:59",
+            "status_sesi": 0,
+            "created_at": null,
+            "updated_at": null
+        },
+        {
+            "id_sesi_vote": 5,
+            "ket_sesi": "Minggu3",
+            "tgl_mulai_vote": "2020-03-06 00:00:00",
+            "tgl_akhir_vote": "2020-04-26 23:59:59",
+            "status_sesi": 1,
+            "created_at": null,
+            "updated_at": null
+        }
+    ]
+}
+
+### Get One Sesi Vote [GET /sesi/get/:id]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
++ Response 200 (application/json)
+
+    + Body
+    
+    {
+    "sesi": [
+        {
+            "id_sesi_vote": 2,
+            "ket_sesi": "Minggu1",
+            "tgl_mulai_vote": "2020-03-19 00:00:00",
+            "tgl_akhir_vote": "2020-04-25 23:59:59",
+            "status_sesi": 0,
+            "created_at": null,
+            "updated_at": null
+        }
+    ]
+}
+
+### Delete Sesi Vote [POST /sesi/vote/delete/:id]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
++ Response 200 (application/json)
+
+    + Body
+        {
+            "status": "sesi vote deleted"
+        }
+
+### Update Sesi Vote [POST /sesi/vote/update/:id]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
+    + Body
+        {
+            "ket_sesi": "Minggu3",
+            "tgl_mulai_vote": "2020-03-19 00:00:00",
+            "tgl_akhir_vote": "2020-04-25 23:59:59"
+        }
+    
++ Response 200 (application/json)
+
+    + Body
+        {
+            "status": "data updated",
+            "ket_sesi": "Minggu3",
+            "tgl_mulai_vote": "2020-03-19 00:00:00",
+            "tgl_akhir_vote": "2020-04-25 23:59:59"
+        }
+
+### Get list peserta untuk vote [GET /vote/list]
+
++ Response 200 (application/json)
+
+    + Body
+    
+    {
+    "user": [
+        {
+            "id": 8,
+            "name": "Paimin",
+            "email": "Paimin@gmail.com"
+        }
+    ]
+}
+
+### vote untuk juri [POST /vote/juri/:id]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
+    + Body
+        {
+            "id_juri": 10,
+        }
+    
++ Response 200 (application/json)
+
+    + Body
+        {
+            "status": "Voted",
+            "count": 5
+        }
+
+### vote untuk orang umum [POST /vote/:id]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
+    
++ Response 200 (application/json)
+
+    + Body
+        {
+            "status": "Voted",
+            "count": 5
+        }

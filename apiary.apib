@@ -3,7 +3,8 @@ HOST: http://localhost:8000/
 
 # SIPOLI
 
-SIPOLI is a polling system that used for Duta Idol (Project Peterpan DWCU_Argo Uciha) 
+SIPOLI is a polling system that used for Duta Idol (Project Peterpan DWCU) 
+Dedicated to Argo Uchiha
 
 ## SIPOLI API [/api]
 
@@ -609,18 +610,18 @@ SIPOLI is a polling system that used for Duta Idol (Project Peterpan DWCU_Argo U
             "count": 5
         }
 
-### Get Hasil Vote Berdasarkan Sesi Vote [GET vote/hasilVote/:id]
+### Get hasil vote berdasarkan sesi vote [GET /vote/hasilVote/:id]
 
 + Request (application/json)
 
     + Headers
         Authorization: paste your token here
-    
-    
+ 
 + Response 200 (application/json)
 
     + Body
-        {
+    
+    {
     "list": [
         {
             "id_user": 5,
@@ -633,4 +634,20 @@ SIPOLI is a polling system that used for Duta Idol (Project Peterpan DWCU_Argo U
             "jumlah_vote": 1
         }
     ]
-    }
+}
+
+### Eliminasi Peserta [POST /eliminasi]
+
++ Request (application/json)
+
+    + Headers
+        Authorization: paste your token here
+    
+    
++ Response 200 (application/json)
+
+    + Body
+        {
+           "Jumlah terelimiasi": 0,
+            "idSesiVoteDitutup": 5
+        }

@@ -11,15 +11,27 @@ class sesiVouteController extends Controller
         $status = DB::table('sesi_votes')->pluck('status_sesi')->last();
         if($status!=null){
             if($status!=1) {
+                //create sesi di table sesi vote
                 $vote = DB::table('sesi_votes')->insert([
                     'ket_sesi' => $request->ket_sesi,
                     'tgl_mulai_vote' => $request->tgl_mulai_vote,
                     'tgl_akhir_vote' =>$request->tgl_akhir_vote,
                     'status_sesi' => 1,
                 ]);
+                //update count_vote di user jadi 0 semua
                 $user = DB::table('users')->update([
                     'count_vote'=>0,
                 ]);
+                //insert di table laporan data seluruh peserta
+                $idPeserta = DB::table('users')->where('status','AUDISI')->pluck('id');
+                foreach($idPeserta as $value){
+                    DB::table('laporans')->insert([
+                    'id_sesi_vote'=>1,
+                    'id_user'=>$value,
+                    'jumlah_vote'=>0,
+                    ]);
+                }
+
                 return response()->json([
                     'status' => 'Sesi Created',
                     'ket_sesi' => $request->ket_sesi,
@@ -42,6 +54,14 @@ class sesiVouteController extends Controller
             $user = DB::table('users')->update([
                 'count_vote'=>0,
             ]);
+            $idPeserta = DB::table('users')->where('status','AUDISI')->pluck('id');
+                foreach($idPeserta as $value){
+                    DB::table('laporans')->insert([
+                    'id_sesi_vote'=>1,
+                    'id_user'=>$value,
+                    'jumlah_vote'=>0,
+                    ]);
+            }
             return response()->json([
                 'status' => 'Sesi Created',
                 'ket_sesi' => $request->ket_sesi,

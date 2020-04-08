@@ -27,6 +27,9 @@ class VouteController extends Controller
                 DB::table('users')->where('id',$id)->update([
                     'count_vote'=>$count+1,
                 ]);
+                DB::table('laporans')->where('id_user',$id)->update([
+                    'jumlah_vote'=>$count+1,
+                ]);
                 $countValue=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
                 $res='Voted';
             }else{
@@ -81,6 +84,9 @@ class VouteController extends Controller
                             DB::table('users')->where('id',$id)->update([
                                 'count_vote'=>$count+5,
                             ]);
+                            DB::table('laporans')->where('id_user',$id)->update([
+                                'jumlah_vote'=>$count+5,
+                            ]);
                             $countValue=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
                             $res='Voted';
                     }else{
@@ -114,11 +120,10 @@ class VouteController extends Controller
     }
 
     public function getListHasilVouteByKet($id){
-        $list = DB::table('votes')
-                    ->join('users','votes.id_org_di_vote','=','users.id')
+        $list = DB::table('laporans')
+                    ->join('users','laporans.id_user','=','users.id')
                     ->where('id_sesi_vote',$id)
-                    ->select('id_org_di_vote','users.name',DB::raw('count(id_org_di_vote) as total'))
-                    ->groupBy('id_org_di_vote','users.name')
+                    ->select('id_user','users.name','jumlah_vote')
                     ->get();
         return response()->json(compact('list'));
 
@@ -133,15 +138,16 @@ class VouteController extends Controller
                         ->update(['count_vote'=>null,]);
         $id = DB::table('users')
                     ->where('count_vote',DB::raw("(select min(count_vote) from users)"))
-                    ->pluck('id')
-                    ->first();
-        $eliminasi = DB::table('users')->where('id',$id)->update(['status'=>'ELIMINASI']);
-        $nameEliminasi = DB::table('users')->where('id',$id)->pluck('name')->first();
+                    ->pluck('id');
+        $countEliminasi = count($id);
+        foreach($id as $value){
+            $eliminasi = DB::table('users')->where('id',$value)->update(['status'=>'ELIMINASI']);
+        }
         $idSesiVote = DB::table('sesi_votes')->pluck('id_sesi_vote')->last();
         $tutupSesiVote = DB::table('sesi_votes')->where('id_sesi_vote',$idSesiVote)->update(['status_sesi'=>0]);
 
         return response()->json([
-            'Terelimiasi' => $nameEliminasi,
+            'Jumlah terelimiasi' => $countEliminasi,
             'idSesiVoteDitutup' => $idSesiVote,
         ]);
     }

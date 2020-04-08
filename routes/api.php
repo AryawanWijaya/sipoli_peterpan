@@ -60,6 +60,8 @@ Route::get('/vote/list','VouteController@listVoute');
 Route::get('/vote/hasilVote/{id}','VouteController@getListHasilVouteByKet');
 Route::post('/eliminasi','VouteController@eliminasiPeserta');
 
+Route::post('/coba','sesiVouteController@insertPesertaToLaporan');
+
 
 // Route::post('/admin/createPeserta', 'adminController@createPeserta');
 // Route::post('/admin/updatePeserta', 'adminController@updatePeserta');

@@ -42,8 +42,8 @@ class sesiVouteController extends Controller
                 ],200);
             }else{
                 return response()->json([
-                    'error' => 'Sesi sebelumnya belum di hitung'
-                ]);
+                    'error' => 'Sesi sebelumnya belum di tutup'
+                ],400);
             }
         }else{
             $vote = DB::table('sesi_votes')->insert([
@@ -105,6 +105,11 @@ class sesiVouteController extends Controller
             'tgl_mulai_vote' => $request->tgl_mulai_vote,
             'tgl_akhir_vote' =>$request->tgl_akhir_vote,
         ],200);
+    }
+
+    public function getStatusLastSesi(){
+        $sesi = DB::table('sesi_votes')->pluck('status_sesi')->last();
+        return response()->json(compact('sesi'));
     }
 
 

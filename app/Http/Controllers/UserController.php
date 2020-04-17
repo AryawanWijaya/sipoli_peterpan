@@ -23,10 +23,12 @@ class UserController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
         $role = DB::table('users')->where('email',$request->email)->pluck('role')->first();
+        $id = DB::table('users')->where('email',$request->email)->pluck('id')->first();
         return response()->json([
             'token' => $token,
-            'role' => $role
-        ]);
+            'role' => $role,
+            'id' =>$id,
+        ],200);
     }
 
     public function register(Request $request)
@@ -38,7 +40,7 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
+            return response()->json(['error' => $validator->errors()->toJson()], 400);
         }
 
         $user = User::create([
@@ -65,7 +67,7 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
+            return response()->json(['error' => $validator->errors()->toJson()], 400);
         }
 
         $user = User::create([
@@ -90,7 +92,7 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
+            return response()->json(['error' =>$validator->errors()->toJson()], 400);
         }
 
         $user = User::create([

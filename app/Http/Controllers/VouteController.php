@@ -32,20 +32,23 @@ class VouteController extends Controller
                 ]);
                 $countValue=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
                 $res='Voted';
+                return response()->json([
+                    'status'=>$res,
+                    'count'=>$countValue,
+                ],200);
             }else{
                 $res='Error Vote, Anda tidak dalam masa Vote';
                 $countValue=0;
+                return response()->json([
+                    'error'=>$res,
+                    'count'=>$countValue,
+                ],400);
             }
-            return response()->json([
-                'status'=>$res,
-                'count'=>$countValue,
-            ],200);
         }else{
             return response()->json([
                 'error' =>'Peserta tidak dalam status audisi'
-            ],200);
+            ],400);
         }
-
     }
 
     private function cekJuri($id_juri, $id_sesi){
@@ -89,34 +92,49 @@ class VouteController extends Controller
                             ]);
                             $countValue=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
                             $res='Voted';
+                            return response()->json([
+                                'status'=>$res,
+                                'count'=>$countValue,
+                            ],200);
                     }else{
                         $res='Id Juri Sudah Melakukan Vote';
                         $countValue=0;
+                        return response()->json([
+                            'error'=>$res,
+                            'count'=>$countValue,
+                        ],400);
                     }
                 }else{
                     $res='Sesi Vote telah abis';
                     $countValue=0;
+                    return response()->json([
+                        'error'=>$res,
+                        'count'=>$countValue,
+                    ],400);
                 }
-                return response()->json([
-                    'status'=>$res,
-                    'count'=>$countValue,
-                ],200);
+
             }else{
                 return response()->json([
                     'error' =>'Peserta tidak dalam status audisi'
-                ],200);
+                ],400);
             }
         }else{
             return response()->json([
                 'error' =>'Status Juri Tidak Aktif'
-            ],200);
+            ],400);
         }
-
-
     }
     public function listVoute(){
-        $user =DB::table('users')->where('status','AUDISI')->select('id','name','email')->get();
-        return response()->json(compact('user'));
+        $sesi = DB::table('sesi_votes')->pluck('status_sesi')->last();
+        if($sesi==1){
+            $user =DB::table('users')->where('status','AUDISI')->select('id','name','email')->get();
+            return response()->json(compact('user'));
+        }else{
+            return response()->json([
+                'error' => 'tidak dalam masa/sesi vote',
+            ],400);
+        }
+
     }
 
     public function getListHasilVouteByKet($id){
@@ -147,9 +165,9 @@ class VouteController extends Controller
         $tutupSesiVote = DB::table('sesi_votes')->where('id_sesi_vote',$idSesiVote)->update(['status_sesi'=>0]);
 
         return response()->json([
-            'Jumlah terelimiasi' => $countEliminasi,
+            'jumlahTerelimiasi' => $countEliminasi,
             'idSesiVoteDitutup' => $idSesiVote,
-        ]);
+        ],200);
     }
 }
 

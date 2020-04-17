@@ -27,7 +27,7 @@ Route::middleware('jwt.auth')->group(function(){
 //peserta --> dilakukan sendiri oleh peserta
 Route::post('/registerPeserta', 'UserController@register');
 Route::post('/pesertaEdit/{id}','UserController@editDataPeserta')->middleware('jwt.verify');
-Route::get('/peserta/getAll','UserController@getAllPeserta')->middleware(['jwt.verify','cors']);
+Route::get('/peserta/getAll','UserController@getAllPeserta')->middleware('cors','jwt.verify');
 //admin
 Route::post('/registerAdmin', 'UserController@registerAdmin');
 //juri --> dilakukan oleh admin

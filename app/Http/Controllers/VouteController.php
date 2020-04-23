@@ -141,7 +141,7 @@ class VouteController extends Controller
         $list = DB::table('laporans')
                     ->join('users','laporans.id_user','=','users.id')
                     ->where('id_sesi_vote',$id)
-                    ->select('users.name','jumlah_vote')
+                    ->select('users.id','users.name','jumlah_vote')
                     ->get();
         return response()->json(compact('list'));
 

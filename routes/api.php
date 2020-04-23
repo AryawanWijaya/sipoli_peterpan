@@ -54,6 +54,7 @@ Route::post('/vote/{id}','VouteController@vote')->middleware('cors');
 Route::get('/vote/list','VouteController@listVoute')->middleware('cors');
 Route::post('/vote/juri/{id}','VouteController@voteJuri')->middleware('cors','jwt.verify');
 
+// Route::get('/vote/hasilVote/{id}','VouteController@getListHasilVouteByKet');
 Route::get('/vote/hasilVote/{id}','VouteController@getListHasilVouteByKet')->middleware('cors','jwt.verify');
 Route::post('/eliminasi','VouteController@eliminasiPeserta')->middleware('cors','jwt.verify');
 

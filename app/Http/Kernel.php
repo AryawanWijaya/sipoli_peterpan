@@ -19,8 +19,8 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \Fruitcake\Cors\HandleCors::class,
-
+        // \Fruitcake\Cors\HandleCors::class,
+        \App\Http\Middleware\Cors::class,//handle cors
     ];
 
     /**
@@ -65,7 +65,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
         'paths' => ['api/*'],
-        'cors' => \App\Http\Middleware\Cors::class,
+        'cors' => \App\Http\Middleware\Cors::class, //handle cors
     ];
 
     /**
@@ -83,5 +83,6 @@ class Kernel extends HttpKernel
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
+
     ];
 }

@@ -19,11 +19,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('jwt.auth')->group(function(){
+// Route::middleware('jwt.auth')->group(function(){
 
-    Route::post('logout', 'UserController@logout')->middleware('cors');
-});
+//     Route::post('logout', 'UserController@logout')->middleware('cors');
+// });
 
+Route::post('logout', 'UserController@logout')->middleware('cors','jwt.verify');
 //peserta --> dilakukan sendiri oleh peserta
 Route::post('/registerPeserta', 'UserController@register')->middleware('cors');
 Route::post('/pesertaEdit/{id}','UserController@editDataPeserta')->middleware('cors','jwt.verify');

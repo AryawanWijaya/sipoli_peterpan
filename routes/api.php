@@ -48,7 +48,7 @@ Route::get('/sesi/getAll','sesiVouteController@getAllSesi')->middleware('cors','
 Route::get('/sesi/get/{id}','sesiVouteController@getOneSesi')->middleware('cors','jwt.verify');
 Route::post('/sesi/vote/update/{id}','sesiVouteController@editSesi')->middleware('cors','jwt.verify');
 Route::post('/sesi/vote/delete/{id}','sesiVouteController@deleteSesi')->middleware('cors','jwt.verify');
-Route::get('/lastSesi','sesiVouteController@getStatusLastSesi')->middleware('cors','jwt.verify');
+Route::get('/lastSesi','sesiVouteController@getStatusLastSesi')->middleware('cors');
 
 //vote
 Route::post('/vote/{id}','VouteController@vote')->middleware('cors');

@@ -16,6 +16,7 @@ class VouteController extends Controller
         $date = date("Y-m-d H:i:s");
         $count=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
         $statusPeserta = DB::table('users')->where('id',$id)->pluck('status')->first();
+        $sesiLastLaporan = DB::table('laporans')->pluck('id_sesi_vote')->last();
         if($statusPeserta=='AUDISI'){
             if($date<=$akhir && $date>=$awal){
                 DB::table('votes')->insert([
@@ -27,7 +28,10 @@ class VouteController extends Controller
                 DB::table('users')->where('id',$id)->update([
                     'count_vote'=>$count+1,
                 ]);
-                DB::table('laporans')->where('id_user',$id)->update([
+                DB::table('laporans')->where([
+                    ['id_user','=',$id],
+                    ['id_sesi_vote','=',$sesiLastLaporan]
+                    ])->update([
                     'jumlah_vote'=>$count+1,
                 ]);
                 $countValue=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
@@ -72,6 +76,7 @@ class VouteController extends Controller
         $count=DB::table('users')->where('id',$id)->pluck('count_vote')->first();
         $statusPeserta = DB::table('users')->where('id',$id)->pluck('status')->first();
         $statusJuri = DB::table('users')->where('id',$request->get('id_juri'))->pluck('status')->first();
+        $sesiLastLaporan = DB::table('laporans')->pluck('id_sesi_vote')->last();
         if($statusJuri=='Aktif'){
             if($statusPeserta=='AUDISI'){
                 if($date<=$akhir && $date>=$awal){
@@ -87,7 +92,10 @@ class VouteController extends Controller
                             DB::table('users')->where('id',$id)->update([
                                 'count_vote'=>$count+5,
                             ]);
-                            DB::table('laporans')->where('id_user',$id)->update([
+                            DB::table('laporans')->where([
+                                ['id_user','=',$id],
+                                ['id_sesi_vote','=',$sesiLastLaporan]
+                                ])->update([
                                 'jumlah_vote'=>$count+5,
                             ]);
                             $countValue=DB::table('users')->where('id',$id)->pluck('count_vote')->first();

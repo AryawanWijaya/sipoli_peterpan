@@ -16,8 +16,8 @@ class CreateSesiVotesTable extends Migration
         Schema::create('sesi_votes', function (Blueprint $table) {
             $table->bigIncrements('id_sesi_vote');
             $table->string('ket_sesi');
-            $table->timestamp('tgl_mulai_vote')->nullable();
-            $table->timestamp('tgl_akhir_vote')->nullable();
+            $table->timestamp('tgl_mulai_vote');
+            $table->timestamp('tgl_akhir_vote');
             $table->boolean('status_sesi');
             $table->timestamps();
         });

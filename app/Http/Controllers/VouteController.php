@@ -152,7 +152,11 @@ class VouteController extends Controller
                     ->select('users.id','users.name','jumlah_vote')
                     ->get();
         return response()->json(compact('list'));
+    }
 
+    public function getALlVote(){
+        $list = DB::select('SELECT * FROM laporans');
+        return response()->json(compact('list'));
     }
 
     public function eliminasiPeserta(){

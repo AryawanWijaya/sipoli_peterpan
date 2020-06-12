@@ -59,4 +59,6 @@ Route::post('/vote/juri/{id}','VouteController@voteJuri')->middleware('cors','jw
 Route::get('/vote/hasilVote/{id}','VouteController@getListHasilVouteByKet')->middleware('cors','jwt.verify');
 Route::post('/eliminasi','VouteController@eliminasiPeserta')->middleware('cors','jwt.verify');
 
+Route::get('/allReport',"VouteController@getALlVote");
+
 
